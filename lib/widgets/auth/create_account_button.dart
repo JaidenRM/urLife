@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:urLife/data/repository/user_repository.dart';
+import 'package:urLife/screens/register_screen.dart';
 
 class CreateAccountButton extends StatelessWidget {
   final UserRepository _userRepository;
@@ -16,7 +17,7 @@ class CreateAccountButton extends StatelessWidget {
       child: Text('Create an Account'),
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => throw UnimplementedError
+          builder: (context) => RegisterScreen(userRepository: _userRepository)
         )
       ),
     );

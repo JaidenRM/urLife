@@ -5,6 +5,7 @@ import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/bloc/simple_bloc_delegate.dart';
 import 'package:urLife/data/repository/user_repository.dart';
 import 'package:urLife/screens/home_screen.dart';
+import 'package:urLife/screens/login_screen.dart';
 import 'package:urLife/screens/splash_screen.dart';
 
 void main() {
@@ -41,8 +42,11 @@ class App extends StatelessWidget {
             return SplashScreen();
           if(state is AuthenticationSuccess)
             return HomeScreen(name: state.displayName,);
-            
-          return Container();
+          if(state is AuthenticationFailure) {
+            return LoginScreen(userRepository: _userRepository);
+          }
+
+          return Text('Error: Could not match AuthenticationState');
         },
       )
     );
