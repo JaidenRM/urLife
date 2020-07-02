@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/bloc/register/register_bloc.dart';
-import 'package:urLife/data/repository/user_repository.dart';
 import 'package:urLife/widgets/auth/register_button.dart';
 
 class RegisterForm extends StatefulWidget {

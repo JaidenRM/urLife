@@ -21,11 +21,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   @override
   Stream<AuthenticationState> mapEventToState(AuthenticationEvent event) async* {
     if(event is AuthenticationStarted) {
-
+      yield* _mapAuthenticationStartedToState();
     } else if (event is AuthenticationLoggedIn) {
-
+      yield* _mapAuthenticationLoggedInToState();
     } else if (event is AuthenticationLoggedOut) {
-
+      yield* _mapAuthenticationLoggedOutToState();
     }
   }
 
