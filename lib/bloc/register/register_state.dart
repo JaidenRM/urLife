@@ -4,12 +4,15 @@ part of 'register_bloc.dart';
 //Could have made them a single entity
 //HOWEVER - it is likely the two diverge so it is better to decouple
 @immutable
-class RegisterState {
+class RegisterState extends Equatable {
   final bool isEmailValid;
   final bool isPasswordValid;
   final bool isSubmitting;
   final bool isSuccess;
   final bool isFailure;
+
+  @override
+  List<Object> get props => [isEmailValid, isPasswordValid, isSubmitting, isSuccess, isFailure];
 
   bool get isFormValid => isEmailValid && isPasswordValid;
 

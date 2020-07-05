@@ -1,7 +1,7 @@
 part of 'login_bloc.dart';
 
 @immutable
-class LoginState {
+class LoginState extends Equatable{
   final bool isEmailValid;
   final bool isPasswordValid;
   final bool isSubmitting;
@@ -9,6 +9,9 @@ class LoginState {
   final bool isFailure;
 
   bool get isFormValid => isEmailValid && isPasswordValid;
+
+  @override
+  List<Object> get props => [isEmailValid, isPasswordValid, isSubmitting, isSuccess, isFailure];
 
   LoginState({
     @required this.isEmailValid,
