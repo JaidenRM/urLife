@@ -1,0 +1,3 @@
+class UserData {
+  int getAge() {}
+}

@@ -1,0 +1,3 @@
+//work on this next
+  //not so much the UI but this can be a good step to check firebase is working ok
+  //ask some basic info and/or weight, height, goals etc... 

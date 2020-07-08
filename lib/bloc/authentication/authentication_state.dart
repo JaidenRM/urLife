@@ -24,7 +24,7 @@ class AuthenticationSuccess extends AuthenticationState {
 
   //overriden for easier time reading when printing to console or in Transitions
   @override
-  String toString() => 'Authentication Success { displayName: $displayName }';
+  String toString() => 'AuthenticationSuccess { displayName: $displayName }';
 }
 
 //not authenticated
