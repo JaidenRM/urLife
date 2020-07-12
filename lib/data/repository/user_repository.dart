@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:urLife/data/data_factory.dart';
+import 'package:urLife/models/Profile.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
@@ -51,7 +53,18 @@ class UserRepository {
   }
 
   //Only returning email ATM but can return much more complex data like a 'User' data model
-  Future<String> getUser() async {
-    return (await _firebaseAuth.currentUser()).email;
+  Future<Profile> getUser() async {
+    final userId = await _firebaseAuth.currentUser().then((user) => user.uid);
+    return await DataFactory().dataSource.userData.getProfile(userId);
+  }
+
+  Future<bool> addOrUpdateUser(Profile profile, { bool update = false }) async {
+    final userDb = DataFactory().dataSource.userData;
+    final userId = await _firebaseAuth.currentUser().then((user) => user.uid);
+    //will return an error if profile doesn't exist if we call this func
+    if(update)
+      return await userDb.updateProfile(userId, profile);
+    
+    return await userDb.addOrUpdateProfile(userId, profile);
   }
 }

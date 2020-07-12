@@ -1,6 +1,7 @@
 import 'package:urLife/models/Profile.dart';
 
 abstract class UserData {
-  Profile getProfile(String userId);
-  bool updateProfile(Profile profile);
+  Future<Profile> getProfile(String userId);
+  Future<bool> addOrUpdateProfile(String userId, Profile profile);
+  Future<bool> updateProfile(String userId, Profile profile);
 }

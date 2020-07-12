@@ -3,11 +3,12 @@ import 'package:test/test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/data/repository/user_repository.dart';
+import 'package:urLife/models/Profile.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
-  const String _name = "Jaiden";
+  final Profile _user = Profile();
 
   group('AuthenticationBloc', () {
     UserRepository userRepository;
@@ -28,12 +29,12 @@ void main() {
         when(userRepository.isSignedIn())
           .thenAnswer((_) async => true);
         when(userRepository.getUser())
-          .thenAnswer((_) async => _name);
+          .thenAnswer((_) async => _user);
         
         return authenticationBloc;
       },
       act: (authenticationBloc) => authenticationBloc.add(AuthenticationStarted()),
-      expect: [AuthenticationSuccess(_name)]
+      expect: [AuthenticationSuccess(_user.firstName)]
     );
 
     blocTest('Check failure when user isn''t signed in',

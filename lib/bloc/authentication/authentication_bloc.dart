@@ -34,8 +34,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
     if(isSignedIn) {
       try{
-        final name = await _userRepository.getUser();
-        yield AuthenticationSuccess(name);
+        final user = await _userRepository.getUser();
+        yield AuthenticationSuccess(user == null ? null : user.firstName);
       } catch(_) {
         yield AuthenticationFailure();
       }
@@ -46,7 +46,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   Stream<AuthenticationState> _mapAuthenticationLoggedInToState() async* {
     try {
-      yield AuthenticationSuccess(await _userRepository.getUser());
+      final user = await _userRepository.getUser();
+      yield AuthenticationSuccess(user == null ? null : user.firstName);
     } catch(_) {
       yield AuthenticationFailure();
     }
