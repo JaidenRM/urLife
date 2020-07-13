@@ -34,6 +34,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         firstName: event.firstName, lastName: event.lastName,
         height: event.height, weight: event.weight, age: event.age
       );
+    if(event is ProfileSaved)
+      yield* _mapProfileSavedToState();
   }
 
   Stream<ProfileState> _mapProfileTextChangedToState({
@@ -67,5 +69,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } catch(_) {
       yield ProfileState.failure();
     }
+  }
+
+  Stream<ProfileState> _mapProfileSavedToState() async * {
+    yield ProfileState.saved();
   }
 }

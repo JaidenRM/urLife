@@ -1,34 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/bloc/profile/profile_bloc.dart';
-import 'package:urLife/data/repository/user_repository.dart';
+import 'package:urLife/forms/profile_pt2_form.dart';
 import 'package:urLife/widgets/generic_button.dart';
 
-class ProfileForm extends StatefulWidget {
-  final UserRepository _userRepository;
+class ProfileFormPart1 extends StatefulWidget {
 
-  ProfileForm({ Key key, @required UserRepository userRepository })
-    : assert(userRepository != null),
-      _userRepository = userRepository,
-      super(key: key);
+  ProfileFormPart1({ Key key })
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ProfileFormState();
+  State<StatefulWidget> createState() => _ProfileFormPart1State();
 
 }
 
-class _ProfileFormState extends State<ProfileForm> {
+class _ProfileFormPart1State extends State<ProfileFormPart1> {
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _heightController = TextEditingController();
-  TextEditingController _weightController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
 
   ProfileBloc _profileBloc;
-  UserRepository get _userRepository => widget._userRepository;
 
   bool get isPopulated => _firstNameController.text.isNotEmpty && _lastNameController.text.isNotEmpty;
   bool isSubmitButtonedEnabled(ProfileState state) => state.isFormValid && isPopulated && !state.isSubmitting;
@@ -39,8 +31,6 @@ class _ProfileFormState extends State<ProfileForm> {
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
     _firstNameController.addListener(_onTextChanged);
     _lastNameController.addListener(_onTextChanged);
-    _heightController.addListener(_onTextChanged);
-    _weightController.addListener(_onTextChanged);
     _ageController.addListener(_onTextChanged);
   }
   
@@ -55,7 +45,7 @@ class _ProfileFormState extends State<ProfileForm> {
               SnackBar(
                 content: Row(
                   children: <Widget>[
-                    Text('Update failed!'),
+                    Text('Save failed!'),
                     Icon(Icons.error)
                   ],
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,22 +54,22 @@ class _ProfileFormState extends State<ProfileForm> {
               )
             );
         }
-        if(state.isSubmitting) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: <Widget>[
-                    Text('Updating profile'),
-                    CircularProgressIndicator()
-                  ],
-                ),
-              )
-            );
-        }
-        if(state.isSuccess) {
-          BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLoggedIn());
+        if(state.isSaved) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                BlocProvider<ProfileBloc>(
+                  create: (context) => _profileBloc,
+                  child: Scaffold(
+                    body: ProfileFormPart2(
+                      firstName: _firstNameController.text,
+                      lastName: _lastNameController.text,
+                      age: _ageController.text,
+                    ),
+                  )
+                )
+            )
+          );
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -108,28 +98,6 @@ class _ProfileFormState extends State<ProfileForm> {
                     validator: (_) => !state.isLastNameValid ? 'Invalid last name' : null,
                   ),
                   TextFormField(
-                    controller: _heightController,
-                    autovalidate: true,
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      icon: Icon(FontAwesomeIcons.rulerVertical),
-                      labelText: 'Height (cm)'
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (_) => !state.isHeightValid ? 'Invalid height' : null,
-                  ),
-                  TextFormField(
-                    controller: _weightController,
-                    autovalidate: true,
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      icon: Icon(FontAwesomeIcons.weight),
-                      labelText: 'Weight (kg)'
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (_) => !state.isWeightValid ? 'Invalid weight' : null,
-                  ),
-                  TextFormField(
                     controller: _ageController,
                     autovalidate: true,
                     autocorrect: true,
@@ -143,7 +111,7 @@ class _ProfileFormState extends State<ProfileForm> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: GenericButton(
-                      buttonText: 'Update',
+                      buttonText: 'Next',
                       onPressed:
                         isSubmitButtonedEnabled(state)
                         ? _onFormSubmitted
@@ -163,31 +131,17 @@ class _ProfileFormState extends State<ProfileForm> {
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _heightController.dispose();
-    _weightController.dispose();
     _ageController.dispose();
     super.dispose();
   }
 
-  void _onFormSubmitted() {
-    _profileBloc.add(
-      ProfileUpdated(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        height: _heightController.text,
-        weight: _weightController.text,
-        age: _ageController.text
-      )
-    );
-  }
+  void _onFormSubmitted() => _profileBloc.add(ProfileSaved());
 
   void _onTextChanged() {
     _profileBloc.add(
       ProfileTextChanged(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
-        height: _heightController.text,
-        weight: _weightController.text,
         age: _ageController.text
       )
     );

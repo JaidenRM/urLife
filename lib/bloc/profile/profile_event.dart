@@ -33,6 +33,8 @@ class ProfileTextChanged extends ProfileEvent {
   }''';
 }
 
+class ProfileSaved extends ProfileEvent {}
+
 class ProfileUpdated extends ProfileEvent {
   final String firstName;
   final String lastName;

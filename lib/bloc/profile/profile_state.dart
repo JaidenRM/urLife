@@ -9,6 +9,7 @@ class ProfileState extends Equatable{
   final bool isAgeValid;
 
   final bool isSubmitting;
+  final bool isSaved;
   final bool isSuccess;
   final bool isFailure;
 
@@ -19,7 +20,7 @@ class ProfileState extends Equatable{
   List<Object> get props => [
     isFirstNameValid, isLastNameValid,
     isHeightValid, isWeightValid, isAgeValid,
-    isSubmitting, isSuccess, isFailure
+    isSubmitting, isSaved, isSuccess, isFailure
   ];
 
   ProfileState({
@@ -29,6 +30,7 @@ class ProfileState extends Equatable{
     @required this.isWeightValid,
     @required this.isAgeValid,
     @required this.isSubmitting,
+    @required this.isSaved,
     @required this.isSuccess,
     @required this.isFailure,
   });
@@ -42,6 +44,7 @@ class ProfileState extends Equatable{
       isWeightValid: true,
       isAgeValid: true,
       isSubmitting: false,
+      isSaved: false,
       isSuccess: false,
       isFailure: false,
     );
@@ -55,6 +58,7 @@ class ProfileState extends Equatable{
       isWeightValid: true,
       isAgeValid: true,
       isSubmitting: true,
+      isSaved: false,
       isSuccess: false,
       isFailure: false,
     );
@@ -68,6 +72,7 @@ class ProfileState extends Equatable{
       isWeightValid: true,
       isAgeValid: true,
       isSubmitting: false,
+      isSaved: false,
       isSuccess: false,
       isFailure: true,
     );
@@ -81,7 +86,22 @@ class ProfileState extends Equatable{
       isWeightValid: true,
       isAgeValid: true,
       isSubmitting: false,
+      isSaved: false,
       isSuccess: true,
+      isFailure: false,
+    );
+    
+  //Profile has succeeded
+  factory ProfileState.saved() =>
+    ProfileState(
+      isFirstNameValid: true,
+      isLastNameValid: true,
+      isHeightValid: true,
+      isWeightValid: true,
+      isAgeValid: true,
+      isSubmitting: false,
+      isSaved: true,
+      isSuccess: false,
       isFailure: false,
     );
 
@@ -101,6 +121,7 @@ class ProfileState extends Equatable{
       isWeightValid: isWeightValid,
       isAgeValid: isAgeValid,
       isSubmitting: false,
+      isSaved: false,
       isSuccess: false,
       isFailure: false,
     );
@@ -115,6 +136,7 @@ class ProfileState extends Equatable{
     bool isAgeValid,
     bool isSubmittedEnabled,
     bool isSubmitting,
+    bool isSaved,
     bool isSuccess,
     bool isFailure,
   }) {
@@ -125,6 +147,7 @@ class ProfileState extends Equatable{
       isWeightValid: isWeightValid ?? this.isWeightValid,
       isAgeValid: isAgeValid ?? this.isAgeValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
+      isSaved: isSaved ?? this.isSaved,
       isSuccess: isSuccess ?? this.isSuccess,
       isFailure: isFailure ?? this.isFailure,
     );
@@ -139,6 +162,7 @@ class ProfileState extends Equatable{
       isWeightValid: $isWeightValid,
       isAgeValid: $isAgeValid,
       isSubmitting: $isSubmitting,
+      isSaved: $isSaved,
       isSuccess: $isSuccess,
       isFailure: $isFailure,
     }''';
