@@ -111,7 +111,7 @@ class _ProfileFormPart1State extends State<ProfileFormPart1> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: GenericButton(
-                      buttonText: 'Next',
+                      buttonText: Text('Next'),
                       onPressed:
                         isSubmitButtonedEnabled(state)
                         ? _onFormSubmitted

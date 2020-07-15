@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 class GenericButton extends StatelessWidget {
   final VoidCallback _onPressed;
-  final String _buttonText;
+  final Text _buttonText;
+  final RichText _richText;
 
-  GenericButton({ Key key, VoidCallback onPressed, String buttonText })
+  GenericButton({ Key key, VoidCallback onPressed, Text buttonText, RichText richText })
     : _onPressed = onPressed,
-      _buttonText = buttonText ?? "Button",
+      _buttonText = buttonText ?? Text("Button"),
+      _richText = richText,
       super(key: key);
 
   @override
@@ -15,7 +17,7 @@ class GenericButton extends StatelessWidget {
     return RaisedButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: _onPressed,
-      child: Text(_buttonText),
+      child: _richText ?? _buttonText,
     );
   }
 }
