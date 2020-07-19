@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:urLife/data/repository/user_repository.dart';
 import 'package:urLife/models/Profile.dart';
 import 'package:urLife/utils/validators.dart';
-import '../../utils/constants.dart' as Constants;
+import 'package:urLife/utils/constants.dart' as Constants;
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -17,6 +18,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     : assert(userRepository != null),
       _userRepository = userRepository,
       super(ProfileState.initial());
+
+  Stream<Transition<ProfileEvent, ProfileState>> transformEvents(
+    Stream<ProfileEvent> events,
+    TransitionFunction<ProfileEvent, ProfileState> transitionFn,
+  ) {
+    final nonDebounceStream = events.where((event) => 
+      event is! ProfileTextChanged
+    );
+    //we are debouncing these events so we give time for the user to type before we validate
+    //ELI5: only validate when we think the user has stopped typing
+    final debounceStream = events.where((event) => 
+      event is ProfileTextChanged
+    ).debounceTime(Duration(milliseconds: 300));
+    
+    return super.transformEvents(
+      nonDebounceStream.mergeWith([debounceStream]),
+      transitionFn,
+    );
+  }
 
   @override
   Stream<ProfileState> mapEventToState(
@@ -43,9 +63,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     yield state.update(
       isFirstNameValid: firstName == null ? state.isFirstNameValid : Validators.isValidAlpha(firstName, maxLength: Constants.MAX_NAME_LENGTH),
       isLastNameValid: lastName == null ? state.isLastNameValid : Validators.isValidAlpha(lastName, maxLength: Constants.MAX_NAME_LENGTH),
-      isHeightValid: height == null ? state.isHeightValid : Validators.isValidNum(height),
-      isWeightValid: weight == null ? state.isWeightValid : Validators.isValidNum(weight),
-      isAgeValid: age == null ? state.isAgeValid : Validators.isValidNum(age, minValue: Constants.MIN_AGE, maxValue: Constants.MAX_AGE)
+      isHeightValid: height == null ? state.isHeightValid : Validators.isValidNum(height, minValue: Constants.ZERO),
+      isWeightValid: weight == null ? state.isWeightValid : Validators.isValidNum(weight, minValue: Constants.ZERO),
+      isAgeValid: age == null ? state.isAgeValid : Validators.isValidNum(age, minValue: Constants.ZERO, maxValue: Constants.MAX_AGE)
     );
   }
 

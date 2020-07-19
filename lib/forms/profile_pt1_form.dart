@@ -22,7 +22,8 @@ class _ProfileFormPart1State extends State<ProfileFormPart1> {
 
   ProfileBloc _profileBloc;
 
-  bool get isPopulated => _firstNameController.text.isNotEmpty && _lastNameController.text.isNotEmpty;
+  bool get isPopulated => _firstNameController.text.isNotEmpty 
+    && _lastNameController.text.isNotEmpty && _ageController.text.isNotEmpty;
   bool isSubmitButtonedEnabled(ProfileState state) => state.isFormValid && isPopulated && !state.isSubmitting;
 
   @override
@@ -74,53 +75,57 @@ class _ProfileFormPart1State extends State<ProfileFormPart1> {
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
-          return Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Form(
-              child: ListView(
-                children: <Widget>[
-                  TextFormField(
-                    controller: _firstNameController,
-                    autovalidate: true,
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      labelText: 'First Name'
+          return Scaffold(
+            body: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Form(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          controller: _firstNameController,
+                          autovalidate: true,
+                          autocorrect: true,
+                          decoration: InputDecoration(
+                            labelText: 'First Name'
+                          ),
+                          validator: (_) => !state.isFirstNameValid ? 'Invalid first name' : null,
+                        ),
+                        TextFormField(
+                          controller: _lastNameController,
+                          autovalidate: true,
+                          autocorrect: true,
+                          decoration: InputDecoration(
+                            labelText: 'Last Name'
+                          ),
+                          validator: (_) => !state.isLastNameValid ? 'Invalid last name' : null,
+                        ),
+                        TextFormField(
+                          controller: _ageController,
+                          autovalidate: true,
+                          autocorrect: true,
+                          decoration: InputDecoration(
+                            icon: Icon(FontAwesomeIcons.stethoscope),
+                            labelText: 'Age'
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (_) => !state.isAgeValid ? 'Invalid age' : null,
+                        ),
+                      ],
                     ),
-                    validator: (_) => !state.isFirstNameValid ? 'Invalid first name' : null,
                   ),
-                  TextFormField(
-                    controller: _lastNameController,
-                    autovalidate: true,
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      labelText: 'Last Name'
-                    ),
-                    validator: (_) => !state.isLastNameValid ? 'Invalid last name' : null,
-                  ),
-                  TextFormField(
-                    controller: _ageController,
-                    autovalidate: true,
-                    autocorrect: true,
-                    decoration: InputDecoration(
-                      icon: Icon(FontAwesomeIcons.stethoscope),
-                      labelText: 'Age'
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (_) => !state.isAgeValid ? 'Invalid age' : null,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20.0),
-                    child: GenericButton(
-                      buttonText: Text('Next'),
-                      onPressed:
-                        isSubmitButtonedEnabled(state)
-                        ? _onFormSubmitted
-                        : null,
-                    ),
-                  )
-                ],
+                
               ),
             ),
+            floatingActionButton: 
+              GenericButton(
+                buttonText: Text('Next'),
+                onPressed:
+                  isSubmitButtonedEnabled(state)
+                  ? _onFormSubmitted
+                  : null,
+              ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           );
         },
       ),

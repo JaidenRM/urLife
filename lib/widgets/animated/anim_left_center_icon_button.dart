@@ -7,8 +7,8 @@ class AnimatedIconButtonLeftCenter extends StatefulWidget {
   final VoidCallback _onPressed;
   final double _iconSize;
 
-  AnimatedIconButtonLeftCenter({ Key key, @required Icon icon, @required VoidCallback onPressed, double iconSize })
-  : assert(icon != null && onPressed != null),
+  AnimatedIconButtonLeftCenter({ Key key, @required Icon icon, VoidCallback onPressed, double iconSize })
+  : assert(icon != null),
     _icon = icon,
     _onPressed = onPressed,
     _iconSize = iconSize,
@@ -29,8 +29,8 @@ class _FromLeftToCenterAnimationState extends State<AnimatedIconButtonLeftCenter
   VoidCallback _onPressed;
   double _iconSize;
 
-  _FromLeftToCenterAnimationState({ @required Icon icon, @required VoidCallback onPressed, double iconSize })
-  : assert(icon != null && onPressed != null),
+  _FromLeftToCenterAnimationState({ @required Icon icon, VoidCallback onPressed, double iconSize })
+  : assert(icon != null),
     _icon = icon,
     _onPressed = onPressed,
     _iconSize = iconSize;
@@ -38,7 +38,7 @@ class _FromLeftToCenterAnimationState extends State<AnimatedIconButtonLeftCenter
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(seconds: 1))
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 750))
       ..addListener(() { setState(() {}); });
     l2CAnimation = Tween<double>(begin: -0.5, end: 0).animate(controller);
     scaleAnimation = Tween<double>(begin: 0, end: 1).animate(controller);
@@ -58,11 +58,19 @@ class _FromLeftToCenterAnimationState extends State<AnimatedIconButtonLeftCenter
         iconSize: _iconSize ?? 48,
         icon: _icon,
         onPressed: () {
-          controller.reverse();
-          Future.delayed(Duration(seconds: 1))
-            .then((value) => _onPressed());
+          if(_onPressed != null) {
+            controller.reverse();
+            Future.delayed(Duration(milliseconds: 751))
+              .then((value) => _onPressed());
+          }
         },
       )
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }

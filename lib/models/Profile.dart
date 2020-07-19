@@ -10,8 +10,8 @@ class Profile extends Equatable {
   final int weight;
   final int age;
 
-  bool get _canCalcBMI => weight == null || height == null || height == 0;
-  num get bodyMassIndex => _canCalcBMI ? weight / pow(height, 2) : null;
+  bool get _canCalcBMI => weight != null && height != null && height > 0 && weight > 0;
+  num get bodyMassIndex => _canCalcBMI ? (weight / pow(height/100, 2)).round(): null;
 
   DocumentReference docRef;
 

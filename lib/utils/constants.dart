@@ -6,4 +6,4 @@ const int MAX_AGE = 120;
 const int MAX_NAME_LENGTH = 100;
 const int MAX_EMAIL_LENGTH = 255;
 
-const int MIN_AGE = 0;
+const int ZERO = 0;
