@@ -38,6 +38,8 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+android/app/google-services.json
+lib/_*
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
