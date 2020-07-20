@@ -39,6 +39,7 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 android/app/google-services.json
+android/app/src/main/res/values/_secrets.xml
 lib/_*
 
 # Exceptions to above rules.

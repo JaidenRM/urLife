@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:urLife/bloc/activity/activity_bloc.dart';
 import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/bloc/simple_bloc_observer.dart';
 import 'package:urLife/data/repository/user_repository.dart';
@@ -8,6 +9,7 @@ import 'package:urLife/screens/home_screen.dart';
 import 'package:urLife/screens/introduction_screen.dart';
 import 'package:urLife/screens/login_screen.dart';
 import 'package:urLife/screens/splash_screen.dart';
+import 'package:urLife/utils/routes.dart';
 
 void main() {
   //required in Flutter v1.9.4+ before using any plugins IF CODE IS EXECUTED BEFORE runApp(..)
@@ -17,9 +19,12 @@ void main() {
 
   runApp(
     //will automatically close AuthBloc for us
-    BlocProvider(
-      create: (context) => AuthenticationBloc(userRepository: userRepository)
-        ..add(AuthenticationStarted()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthenticationBloc(userRepository: userRepository)
+          ..add(AuthenticationStarted())),
+        BlocProvider(create: (context) => ActivityBloc(),),
+      ],
       child: App(userRepository: userRepository),
     ),
   );
@@ -53,7 +58,8 @@ class App extends StatelessWidget {
 
           return Text('Error: Could not match AuthenticationState');
         },
-      )
+      ),
+      routes: Routes.routes,
     );
   }
 }
