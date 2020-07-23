@@ -7,6 +7,23 @@ abstract class TrackerEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class TrackerReadied extends TrackerEvent {}
+
 class TrackerStarted extends TrackerEvent {}
 
-class TrackerEnded extends TrackerEvent {}
+class TrackerPaused extends TrackerEvent {}
+
+class TrackerResumed extends TrackerEvent {}
+
+class TrackerReset extends TrackerEvent {}
+
+class TrackerFinished extends TrackerEvent {}
+
+class TrackerLocation extends TrackerEvent {
+  final Location location;
+
+  const TrackerLocation(this.location);
+
+  @override
+  List<Object> get props => [location];
+}
