@@ -1,34 +1,35 @@
 part of 'activity_bloc.dart';
 
 abstract class ActivityState extends Equatable {
-  const ActivityState();
-  
-  @override
-  List<Object> get props => [];
-}
-
-class ActivityInitial extends ActivityState {}
-
-class ActivityError extends ActivityState {}
-
-class ActivityLoading extends ActivityState {}
-
-class ActivitySelector extends ActivityState {
   final String activityName;
 
-  ActivitySelector(this.activityName);
+  const ActivityState(this.activityName);
+  
+  @override
+  List<Object> get props => [activityName];
+}
+
+class ActivityInitial extends ActivityState {
+  ActivityInitial() : super("");
+}
+
+class ActivityError extends ActivityState {
+  ActivityError() : super("Error");
+}
+
+class ActivityLoading extends ActivityState {
+  ActivityLoading() : super("Loading...");
+}
+
+class ActivitySelector extends ActivityState {
+
+  ActivitySelector(String activityName) : super(activityName);
 
   factory ActivitySelector.update(String activity) => ActivitySelector(activity);
 
-  @override
-  List<Object> get props => [activityName];
 }
 
 class ActivityTracker extends ActivityState {
-  final String activityName;
 
-  ActivityTracker(this.activityName);
-
-  @override
-  List<Object> get props => [activityName];
+  ActivityTracker(String activityName) : super(activityName);
 }

@@ -13,7 +13,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
     if(event is ActivitySelected)
       yield* _mapActivitySelectedToState(event.selectedActivity);
     if(event is ActivityStarted)
-      yield* _mapActivityStartedToState();
+      yield* _mapActivityStartedToState(event.selectedActivity);
     if(event is ActivityEnded)
       yield* _mapActivityEndedToState();
   }
@@ -22,8 +22,8 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
     yield ActivitySelector.update(activity);
   }
 
-  Stream<ActivityState> _mapActivityStartedToState() async* {
-    yield null;
+  Stream<ActivityState> _mapActivityStartedToState(String activity) async* {
+    yield ActivityTracker(activity);
   }
 
   Stream<ActivityState> _mapActivityEndedToState() async* {

@@ -1,5 +1,5 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:urLife/models/Location.dart';
+import 'package:urLife/models/location.dart';
 
 class LocationService {
   final Duration _updateEvery;
@@ -46,5 +46,16 @@ class LocationService {
     );
 
     return Location(position.latitude, position.longitude, position.timestamp);
+  }
+
+    Stream<Location> onIntervalTest() async* {
+    yield* Stream.periodic(
+      _updateEvery, (i) {
+        double incrVal = i * 0.001;
+        Location loc = Location(-37.813629 + incrVal, 144.963058, DateTime.now());
+        print(loc);
+        return loc;
+      },
+    );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/bloc/profile/profile_bloc.dart';
-import 'package:urLife/models/Profile.dart';
+import 'package:urLife/models/profile.dart';
 import 'package:urLife/widgets/animated/anim_left_center_icon_button.dart';
 import 'package:urLife/widgets/bmi.dart';
 import 'package:urLife/widgets/generic_button.dart';

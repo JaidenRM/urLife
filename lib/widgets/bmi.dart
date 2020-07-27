@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:urLife/models/Profile.dart';
+import 'package:urLife/models/profile.dart';
 
 //this could be done via a BLoC but Profile can handle all the business logic
 class BMI extends StatefulWidget {

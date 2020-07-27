@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
-import 'package:urLife/models/Location.dart';
+import 'package:urLife/data/repository/activity_repository.dart';
+import 'package:urLife/models/activity.dart';
+import 'package:urLife/models/location.dart';
 import 'package:urLife/services/location_service.dart';
 
 part 'tracker_event.dart';
@@ -12,16 +14,28 @@ part 'tracker_state.dart';
 
 class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
   final LocationService _locationService;
+  final ActivityRepository _activityRepository;
 
   StreamSubscription<Location> _locationSubscription;
 
-  TrackerBloc({ @required Geolocator geolocator, Duration updateInterval })
+  TrackerBloc({ 
+    @required ActivityRepository activityRepository, 
+    @required Geolocator geolocator, 
+    Duration updateInterval 
+  })
     : assert(geolocator != null),
       _locationService = LocationService(
         geolocator: geolocator, 
         updateInterval: updateInterval
       ),
+      _activityRepository = activityRepository,
       super(TrackerInitial());
+
+  @override
+  void onTransition(Transition<TrackerEvent, TrackerState> transition) {
+    print(transition);
+    super.onTransition(transition);
+  }
 
   @override
   Stream<TrackerState> mapEventToState(
@@ -58,7 +72,7 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
   Stream<TrackerState> _mapTrackerStartedToState() async* {
     yield TrackerRunning();
     _locationSubscription?.cancel();
-    _locationSubscription = _locationService.onChange().listen(
+    _locationSubscription = _locationService.onIntervalTest().listen(
       (location) {
         add(TrackerLocation(location));
       }
@@ -67,8 +81,13 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
 
   Stream<TrackerState> _mapTrackerLocationToState(TrackerLocation event) async* {
     //add new location into list of previous ones
-    state.locations.add(event.location);
-    yield TrackerRunning(locations: state.locations);
+    List<Location> locations = [];
+    if(event.location != null)
+      locations.add(event.location);
+    if(state.locations != null && state.locations.length > 0)
+      locations.addAll(state.locations);
+
+    yield TrackerRunning(locations: locations);
   }
 
   Stream<TrackerState> _mapTrackerPausedToState() async* {
@@ -92,6 +111,7 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
 
   Stream<TrackerState> _mapTrackerFinishedToState() async* {
     _locationSubscription?.cancel();
+    _activityRepository.addActivity(Activity(activityName: "test", locations: state.locations));
     yield TrackerFinishing(locations: state.locations);
   }
 }

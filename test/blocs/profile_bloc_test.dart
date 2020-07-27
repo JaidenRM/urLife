@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:urLife/bloc/profile/profile_bloc.dart';
 import 'package:urLife/data/repository/user_repository.dart';
-import 'package:urLife/models/Profile.dart';
+import 'package:urLife/models/profile.dart';
 
 class MockRepository extends Mock implements UserRepository {}
 

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:urLife/data/interfaces/user_interface.dart';
-import 'package:urLife/models/Profile.dart';
+import 'package:urLife/models/profile.dart';
 import '../../../utils/constants.dart' as Constants;
 
 class UserDB implements UserData {

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:urLife/bloc/activity/activity_bloc.dart';
-import 'package:urLife/bloc/authentication/authentication_bloc.dart';
 import 'package:urLife/widgets/generic_button.dart';
 import 'package:urLife/utils/constants.dart' as Constants;
 

@@ -1,6 +1,7 @@
 library constants;
 
 const String COLLECTION_USER = "users";
+const String COLLECTION_ACTIVITY = "activities";
 
 const String ACT_JOG = "Jog";
 const String ACT_WALK = "Walk";

@@ -1,4 +1,4 @@
-import 'package:urLife/models/Profile.dart';
+import 'package:urLife/models/profile.dart';
 
 abstract class UserData {
   Future<Profile> getProfile(String userId);

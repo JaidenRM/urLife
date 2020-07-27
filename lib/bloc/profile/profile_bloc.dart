@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:urLife/data/repository/user_repository.dart';
-import 'package:urLife/models/Profile.dart';
+import 'package:urLife/models/profile.dart';
 import 'package:urLife/utils/validators.dart';
 import 'package:urLife/utils/constants.dart' as Constants;
 

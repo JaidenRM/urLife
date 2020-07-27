@@ -26,4 +26,7 @@ class TrackerLocation extends TrackerEvent {
 
   @override
   List<Object> get props => [location];
+
+  @override
+  String toString() => 'TrackerLocation { location: $location }';
 }

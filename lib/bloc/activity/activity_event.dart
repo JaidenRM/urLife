@@ -11,8 +11,18 @@ class ActivitySelected extends ActivityEvent {
   final String selectedActivity;
 
   ActivitySelected(this.selectedActivity);
+
+  @override
+  List<Object> get props => [selectedActivity];
 }
 
-class ActivityStarted extends ActivityEvent {}
+class ActivityStarted extends ActivityEvent {
+  final String selectedActivity;
+
+  ActivityStarted(this.selectedActivity);
+
+  @override
+  List<Object> get props => [selectedActivity];
+}
 
 class ActivityEnded extends ActivityEvent {}
