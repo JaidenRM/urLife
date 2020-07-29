@@ -72,7 +72,7 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
   Stream<TrackerState> _mapTrackerStartedToState() async* {
     yield TrackerRunning();
     _locationSubscription?.cancel();
-    _locationSubscription = _locationService.onIntervalTest().listen(
+    _locationSubscription = _locationService.onChange().listen(
       (location) {
         add(TrackerLocation(location));
       }
@@ -106,7 +106,7 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
 
   Stream<TrackerState> _mapTrackerResetToState() async* {
     _locationSubscription?.cancel();
-    yield TrackerReady();
+    yield* _mapTrackerStartedToState();
   }
 
   Stream<TrackerState> _mapTrackerFinishedToState() async* {

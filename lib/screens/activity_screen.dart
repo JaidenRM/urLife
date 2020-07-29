@@ -15,13 +15,13 @@ class ActivityScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(title: Text('New activity'),),
           body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
               _getTopRow(context, state),
               Expanded(child: Tracker()),
+              _getAction(context, state),
             ]
           ),
-          floatingActionButton: _getFloatingAction(context, state),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         );
       }
     );
@@ -54,7 +54,7 @@ class ActivityScreen extends StatelessWidget {
         );
   }
 
-  Widget _getFloatingAction(BuildContext context, ActivityState state) {
+  Widget _getAction(BuildContext context, ActivityState state) {
     if(state is ActivityTracker) {
       return GenericButton(
         buttonText: Text('Start Tracker'),

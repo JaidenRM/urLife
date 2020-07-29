@@ -16,3 +16,5 @@ const int MAX_NAME_LENGTH = 100;
 const int MAX_EMAIL_LENGTH = 255;
 
 const int ZERO = 0;
+
+const double SIZE_ICON_MD = 48.0;

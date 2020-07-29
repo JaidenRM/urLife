@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:urLife/bloc/tracker/tracker_bloc.dart';
+import 'package:urLife/utils/constants.dart' as Constants;
 
 class Tracker extends StatelessWidget {
 
@@ -10,6 +11,7 @@ class Tracker extends StatelessWidget {
     return BlocBuilder<TrackerBloc, TrackerState>(
       builder: (context, state) {
         return Stack(
+          alignment: Alignment.bottomCenter,
           children: <Widget> [
             GoogleMap(
               myLocationEnabled: true,
@@ -46,40 +48,45 @@ class Tracker extends StatelessWidget {
   }
 
   Widget _getActions(BuildContext context, TrackerState state) {
-    List<Widget> actions = <Widget> [];
+    List<Widget> actions = <Widget> [
+      IconButton(
+        icon: Icon(Icons.replay, size: Constants.SIZE_ICON_MD,),
+        onPressed: () => BlocProvider.of<TrackerBloc>(context).add(TrackerReset()),
+      ),
+    ];
     
-    //if state is this then no actions should be present
-    if(state is TrackerFinished) {}
+    //if state is this then no actions should be present except reset
+    if(state is TrackerFinishing) {}
     else {
-      if(state is TrackerPaused)
+      if(state is TrackerPausing)
         actions.add(
           IconButton(
-            icon: Icon(Icons.play_arrow),
+            icon: Icon(Icons.play_arrow, size: Constants.SIZE_ICON_MD,),
             onPressed: () => BlocProvider.of<TrackerBloc>(context).add(TrackerResumed()),
         ));
       else
         actions.add(
           IconButton(
-            icon: Icon(Icons.pause),
+            icon: Icon(Icons.pause, size: Constants.SIZE_ICON_MD,),
             onPressed: () => BlocProvider.of<TrackerBloc>(context).add(TrackerPaused()),
         ));
 
       actions.addAll(
         <Widget>[
           IconButton(
-            icon: Icon(Icons.stop),
+            icon: Icon(Icons.stop, size: Constants.SIZE_ICON_MD,),
             onPressed: () => BlocProvider.of<TrackerBloc>(context).add(TrackerFinished()),
-          ),
-          IconButton(
-            icon: Icon(Icons.replay),
-            onPressed: () => BlocProvider.of<TrackerBloc>(context).add(TrackerReset()),
           ),
         ]
       );
     }   
 
-    return Row(
-      children: actions,
+    return Padding(
+      padding: EdgeInsets.all(12.3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: actions,
+      )
     );
   }
 }
