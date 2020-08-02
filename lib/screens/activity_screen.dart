@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:urLife/bloc/activity/activity_bloc.dart';
 import 'package:urLife/bloc/tracker/tracker_bloc.dart';
+import 'package:urLife/data/repository/activity_repository.dart';
 import 'package:urLife/widgets/generic_button.dart';
 import 'package:urLife/widgets/tracker.dart';
 import 'package:urLife/utils/constants.dart' as Constants;
@@ -18,7 +19,7 @@ class ActivityScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
               _getTopRow(context, state),
-              Expanded(child: Tracker()),
+              Expanded(child: Tracker(activityRepository: ActivityRepository(),)),
               _getAction(context, state),
             ]
           ),

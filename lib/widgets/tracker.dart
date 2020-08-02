@@ -3,15 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:urLife/bloc/tracker/tracker_bloc.dart';
+import 'package:urLife/data/repository/activity_repository.dart';
 import 'package:urLife/utils/constants.dart' as Constants;
 
 class Tracker extends StatelessWidget {
+  final ActivityRepository _activityRepository;
+
+  Tracker({ Key key, @required ActivityRepository activityRepository })
+    : assert(activityRepository != null),
+      _activityRepository = activityRepository,
+      super(key: key);
 
   Widget build(BuildContext context) {
     return BlocBuilder<TrackerBloc, TrackerState>(
       builder: (context, state) {
         return Stack(
-          alignment: Alignment.bottomCenter,
+          //alignment: Alignment.bottomCenter,
           children: <Widget> [
             GoogleMap(
               myLocationEnabled: true,
@@ -20,6 +27,7 @@ class Tracker extends StatelessWidget {
             ),
             //add timer too i guess
             _getActions(context, state),
+            _getStatsMenu(state),
           ]
         );
       },
@@ -87,6 +95,52 @@ class Tracker extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: actions,
       )
+    );
+  }
+
+  Widget _getStatsMenu(TrackerState state) {
+    var mappedStats = <Widget>[];
+    var statsMap = _activityRepository.calcTrackerStats(state.locations, true, activityName: "Jog", weight: 86);
+    
+    if(statsMap != null && statsMap.toMap().isNotEmpty) {
+      statsMap.toMap().forEach((key, value) => mappedStats
+        .add(
+          Container(
+            child: Column(
+              children: <Widget>[
+                Text(key, style: TextStyle(fontSize: 18),),
+                Text(value.toString(), style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),),
+              ],
+            ),
+          )
+        )
+      );
+    } else {
+      mappedStats.add(Text("No data found...", style: TextStyle(fontSize: 28),));
+    }
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.05,
+      minChildSize: 0.05,
+      maxChildSize: 1,
+      builder: (context, controller) {
+        return Container(
+          color: Colors.white,
+          child: SingleChildScrollView(
+            controller: controller,
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Wrap(
+                alignment: WrapAlignment.spaceAround,
+                runAlignment: WrapAlignment.start,
+                spacing: 30.0,
+                runSpacing: 30.0,
+                children: mappedStats,
+              ),
+            ),
+          )
+        );
+      },
     );
   }
 }
