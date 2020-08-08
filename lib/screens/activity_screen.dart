@@ -14,7 +14,7 @@ class ActivityScreen extends StatelessWidget {
     return BlocBuilder<ActivityBloc, ActivityState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: Text('New activity'),),
+          appBar: AppBar(title: Text('Activity Tracker'),),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [

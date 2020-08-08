@@ -28,5 +28,5 @@ Location _locationFromJson(Map<dynamic, dynamic> json) =>
   Location(
     (json['location'] as GeoPoint).latitude,
     (json['location'] as GeoPoint).longitude,
-    json['time'] as DateTime,
+    (json['time'] as Timestamp).toDate(),
   );

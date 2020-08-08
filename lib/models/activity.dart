@@ -39,7 +39,7 @@ Map<String, dynamic> _activityToJson(Activity activity, String mapName) {
 Activity _activityFromJson(Map<dynamic, dynamic> json) =>
   Activity(
     activityName: json['name'] as String,
-    locations: List<Location>.from(json['locations'].map((loc) {
-      Location.fromJson(loc);
-    })),
+    locations: List<Location>.from(json['locations'].map(
+      (loc) => Location.fromJson(loc)
+    )),
   );

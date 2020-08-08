@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:urLife/data/repository/activity_repository.dart';
 import 'package:urLife/models/activity.dart';
@@ -54,7 +55,9 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
     else if(event is TrackerReset)
       yield* _mapTrackerResetToState();
     else if(event is TrackerFinished)
-      yield* _mapTrackerFinishedToState();
+      yield* _mapTrackerFinishedToState(event);
+    else if(event is ShowTrackerHistory)
+      yield* _mapShowTrackerHistoryToState(event);
   }
 
   @override
@@ -109,9 +112,14 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
     yield* _mapTrackerStartedToState();
   }
 
-  Stream<TrackerState> _mapTrackerFinishedToState() async* {
+  Stream<TrackerState> _mapTrackerFinishedToState(TrackerFinished event) async* {
     _locationSubscription?.cancel();
-    _activityRepository.addActivity(Activity(activityName: "test", locations: state.locations));
-    yield TrackerFinishing(locations: state.locations);
+    //_activityRepository.addActivity(Activity(activityName: "test", locations: event.locations));
+    yield TrackerFinishing(locations: event.locations);
+  }
+
+  Stream<TrackerState> _mapShowTrackerHistoryToState(ShowTrackerHistory event) async* {
+    _locationSubscription?.cancel();
+    yield TrackerHistory(locations: event.locations, showMarker: event.marker, controller: event.controller);
   }
 }

@@ -43,8 +43,12 @@ class ActivityDB implements ActivityData {
 
           return activities;
         })
-        .catchError((_) => null);
-    } catch(_) {
+        .catchError((e) {
+          var x = e;
+          return null;
+        });
+    } catch(err) {
+      var x = err;
       return null;
     }
   }

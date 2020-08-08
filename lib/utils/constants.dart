@@ -12,6 +12,8 @@ const String ACT_SPRINT = "Sprint";
 
 const String ROUTE_FITNESS = "/fitness";
 const String ROUTE_ACTIVITY = "/fitness/activity";
+const String ROUTE_ACTIVITY_HISTORY = "/fitness/activity/history";
+const String ROUTE_TRACKER_HISTORY = "/fitness/tracker/history";
 
 const int MAX_AGE = 120;
 const int MAX_NAME_LENGTH = 100;

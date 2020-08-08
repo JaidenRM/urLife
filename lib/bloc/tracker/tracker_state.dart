@@ -43,3 +43,13 @@ class TrackerFinishing extends TrackerState {
   @override
   String toString() => 'TrackerFinishing { locations: $locations }';
 }
+
+class TrackerHistory extends TrackerState {
+  final Marker showMarker;
+  final GoogleMapController controller;
+
+  TrackerHistory({ List<Location> locations, this.showMarker, this.controller }) : super(locations ?? []);
+
+  @override
+  List<Object> get props => super.props..addAll([this.showMarker, this.controller]);
+}

@@ -13,6 +13,7 @@ import 'package:urLife/screens/login_screen.dart';
 import 'package:urLife/screens/splash_screen.dart';
 import 'package:urLife/utils/routes.dart';
 
+import 'bloc/history/history_bloc.dart';
 import 'bloc/tracker/tracker_bloc.dart';
 
 void main() {
@@ -20,6 +21,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
   final UserRepository userRepository = UserRepository();
+  final ActivityRepository activityRepository = ActivityRepository();
+  final TrackerBloc trackerBloc = TrackerBloc(geolocator: Geolocator(), activityRepository: activityRepository);
 
   runApp(
     //will automatically close AuthBloc for us
@@ -27,12 +30,14 @@ void main() {
       providers: [
         BlocProvider(create: (context) => AuthenticationBloc(userRepository: userRepository)
           ..add(AuthenticationStarted())),
-        BlocProvider(create: (context) => ActivityBloc(),),
-        BlocProvider(create: (context) => TrackerBloc(geolocator: Geolocator(), activityRepository: ActivityRepository()),),
+        BlocProvider(create: (context) => ActivityBloc(activityRepository: activityRepository, trackerBloc: trackerBloc),),
+        BlocProvider(create: (context) => trackerBloc),
+        BlocProvider(create: (context) => HistoryBloc(activityRepository: activityRepository),),
       ],
       child: App(userRepository: userRepository),
     ),
   );
+  
 }
 
 class App extends StatelessWidget {

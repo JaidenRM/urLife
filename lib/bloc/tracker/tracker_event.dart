@@ -17,7 +17,14 @@ class TrackerResumed extends TrackerEvent {}
 
 class TrackerReset extends TrackerEvent {}
 
-class TrackerFinished extends TrackerEvent {}
+class TrackerFinished extends TrackerEvent {
+  final List<Location> locations;
+
+  TrackerFinished(this.locations);
+
+  @override
+  List<Object> get props => [locations];
+}
 
 class TrackerLocation extends TrackerEvent {
   final Location location;
@@ -29,4 +36,12 @@ class TrackerLocation extends TrackerEvent {
 
   @override
   String toString() => 'TrackerLocation { location: $location }';
+}
+
+class ShowTrackerHistory extends TrackerEvent {
+  final List<Location> locations;
+  final Marker marker;
+  final GoogleMapController controller;
+
+  ShowTrackerHistory(this.locations, { this.marker, this.controller });
 }

@@ -10,7 +10,7 @@ abstract class ActivityState extends Equatable {
 }
 
 class ActivityInitial extends ActivityState {
-  ActivityInitial() : super("");
+  ActivityInitial(String activityName) : super(activityName);
 }
 
 class ActivityError extends ActivityState {
@@ -30,6 +30,10 @@ class ActivitySelector extends ActivityState {
 }
 
 class ActivityTracker extends ActivityState {
+  final bool isLocked;
 
-  ActivityTracker(String activityName) : super(activityName);
+  ActivityTracker(String activityName, this.isLocked) : super(activityName);
+
+  @override
+  List<Object> get props => super.props..add(isLocked);
 }

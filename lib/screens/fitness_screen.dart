@@ -20,6 +20,7 @@ class FitnessScreen extends StatelessWidget {
               ),
               GenericButton(
                 buttonText: Text('View history'),
+                onPressed: () => Navigator.of(context).pushNamed(Constants.ROUTE_ACTIVITY_HISTORY),
               ),
               GenericButton(
                 buttonText: Text('View stats/PBs'),
