@@ -30,9 +30,9 @@ class ActivityHistoryScreen extends StatelessWidget {
                     leading: _getIcon(state.activities[index].activityName),
                     title: Text(state.activities[index].activityName),
                     subtitle: Text(state.activities[index].locations[0].time.toLocal().toString()),
-                    onTap: () {
-                      BlocProvider.of<TrackerBloc>(context).add(TrackerFinished(state.activities[index].locations));
+                    onTap: () { 
                       Navigator.of(context).pushNamed(Constants.ROUTE_TRACKER_HISTORY, arguments: ActivityRepository());
+                      BlocProvider.of<TrackerBloc>(context).add(ShowTrackerHistory(state.activities[index].locations));
                     },
                   );
                 },

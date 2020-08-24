@@ -14,7 +14,7 @@ class LocationService {
   })
   : _updateEvery = updateInterval ?? Duration(seconds: 5),
     _geolocator = (geolocator ?? Geolocator())..forceAndroidLocationManager = true,
-    _minDistanceToUpdate = minDistanceToUpdate ?? 5,
+    _minDistanceToUpdate = minDistanceToUpdate ?? 10,
     _locationAccuracy = locationAccuracy ?? LocationAccuracy.best,
     _geolocationPermission = geolocationPermission ?? GeolocationPermission.location;
 

@@ -42,6 +42,7 @@ class ShowTrackerHistory extends TrackerEvent {
   final List<Location> locations;
   final Marker marker;
   final GoogleMapController controller;
+  final List<TrackerStats> stats;
 
-  ShowTrackerHistory(this.locations, { this.marker, this.controller });
+  ShowTrackerHistory(this.locations, { this.marker, this.controller, this.stats });
 }

@@ -31,10 +31,10 @@ class Tracker extends StatelessWidget {
 
     return BlocConsumer<TrackerBloc, TrackerState>(
       listener: (context, state) async {
-        if(state is TrackerHistory && state.controller != null) {
+        if(state is TrackerHistory && state.controller != null && state.showMarker != null) {
           GoogleMapController controller = state.controller;
           _markers.forEach((m) async { 
-            if(await controller.isMarkerInfoWindowShown(m.markerId))
+            if(m.markerId != null && await controller.isMarkerInfoWindowShown(m.markerId))
               controller.hideMarkerInfoWindow(m.markerId);
           });
           controller.showMarkerInfoWindow(state.showMarker.markerId);
@@ -62,7 +62,7 @@ class Tracker extends StatelessWidget {
               markers: _markers,
             ),
             //add timer too i guess
-            if(!_showActions) _getActions(context, state),
+            if(_showActions) _getActions(context, state),
             _getStatsMenu(state),
           ]
         );

@@ -6,8 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:urLife/data/repository/activity_repository.dart';
-import 'package:urLife/models/activity.dart';
 import 'package:urLife/models/location.dart';
+import 'package:urLife/models/tracker_stats.dart';
 import 'package:urLife/services/location_service.dart';
 
 part 'tracker_event.dart';
@@ -120,6 +120,21 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
 
   Stream<TrackerState> _mapShowTrackerHistoryToState(ShowTrackerHistory event) async* {
     _locationSubscription?.cancel();
-    yield TrackerHistory(locations: event.locations, showMarker: event.marker, controller: event.controller);
+    List<TrackerStats> tmpStats = [];
+
+    if((event.locations?.isNotEmpty ?? false) && (event.stats?.isEmpty ?? true)) {
+      for(int i = 0; i < event.locations.length; i++) {
+        if(i == event.locations.length - 1) break;
+
+        tmpStats.add(_activityRepository.calcTrackerStats(
+          [event.locations[i], event.locations[i+1]], true
+        ));
+      }
+    } else {
+      tmpStats = event.stats;
+    }
+
+    yield TrackerHistory(locations: event.locations, showMarker: event.marker
+      , controller: event.controller, stats: tmpStats);
   }
 }

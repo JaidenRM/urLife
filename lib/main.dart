@@ -22,7 +22,6 @@ void main() {
   Bloc.observer = SimpleBlocObserver();
   final UserRepository userRepository = UserRepository();
   final ActivityRepository activityRepository = ActivityRepository();
-  final TrackerBloc trackerBloc = TrackerBloc(geolocator: Geolocator(), activityRepository: activityRepository);
 
   runApp(
     //will automatically close AuthBloc for us
@@ -30,8 +29,8 @@ void main() {
       providers: [
         BlocProvider(create: (context) => AuthenticationBloc(userRepository: userRepository)
           ..add(AuthenticationStarted())),
-        BlocProvider(create: (context) => ActivityBloc(activityRepository: activityRepository, trackerBloc: trackerBloc),),
-        BlocProvider(create: (context) => trackerBloc),
+        BlocProvider(create: (context) => TrackerBloc(geolocator: Geolocator(), activityRepository: activityRepository)),
+        BlocProvider(create: (context) => ActivityBloc(activityRepository: activityRepository, trackerBloc: BlocProvider.of<TrackerBloc>(context)),),
         BlocProvider(create: (context) => HistoryBloc(activityRepository: activityRepository),),
       ],
       child: App(userRepository: userRepository),

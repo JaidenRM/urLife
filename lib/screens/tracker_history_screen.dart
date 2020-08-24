@@ -15,8 +15,9 @@ class TrackerHistoryScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Activity Name'),),
       body: BlocBuilder<TrackerBloc, TrackerState>(
         builder: (context, state) {
-          if(state is TrackerFinishing || state is TrackerHistory) {
+          if(state is TrackerHistory) {
             final _markers = _genMarkers(state);
+            final _media = MediaQuery.of(context);
 
             return Column(
               children: <Widget>[
@@ -25,19 +26,26 @@ class TrackerHistoryScreen extends StatelessWidget {
                     activityRepository: _activityRepository, 
                     markers: _markers, 
                     initPosition: LatLng(state.locations[0].lat, state.locations[0].lng),
+                    showActions: false,
                 )),
-                Container(width: 300, height: 300, child:ListView.builder(
+                Container(width: _media.size.width, height: _media.size.height * 0.4, child:ListView.builder(
                   itemCount: state.locations.length,
                   itemBuilder: (context, index) {
+                    int i = state.locations.length - 1 - index;
+                    bool isInRange = i >= 0 && i < state.stats.length;
+                    
                     return ListTile(
                       title: Text("Position" + (index + 1).toString()),
                       subtitle: Column(children: <Widget>[
-                        Text("Coordinates: " + state.locations[index].lat.toString() + ", " + state.locations[index].lng.toString()),
-                        Text("Time: " + state.locations[index].time.toString()),
+                        Text("Coordinates: " + state.locations[i].lat.toString() + ", " + state.locations[i].lng.toString()),
+                        Text("Time: " + state.locations[i].time.toString()),
+                        Text("Distance: " + (isInRange ? state.stats[i].totalMeters.toString() : "N/A")),
+                        Text("Time Elapsed: " + (isInRange ? state.stats[i].totalSeconds.toString() : "N/A")),
+                        Text("Speed: " + (isInRange ? state.stats[i].fastestSpeed.toString() : "N/A")),
                       ],),
                       onTap: () => BlocProvider.of<TrackerBloc>(context)
-                        .add(ShowTrackerHistory(state.locations, marker: _markers.elementAt(index)
-                          , controller: (state is TrackerHistory) ? state.controller : null)),
+                        .add(ShowTrackerHistory(state.locations, marker: _markers.elementAt(i)
+                          , controller: state.controller, stats: state.stats)),
                     );
                   }
                 )),

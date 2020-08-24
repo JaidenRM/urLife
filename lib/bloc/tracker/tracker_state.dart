@@ -47,9 +47,22 @@ class TrackerFinishing extends TrackerState {
 class TrackerHistory extends TrackerState {
   final Marker showMarker;
   final GoogleMapController controller;
+  final List<TrackerStats> stats;
 
-  TrackerHistory({ List<Location> locations, this.showMarker, this.controller }) : super(locations ?? []);
+  TrackerHistory({ List<Location> locations, this.showMarker, this.controller, this.stats }) : super(locations ?? []);
+
+  TrackerHistory copyWith(
+    List<Location> locations, Marker showMarker,
+    GoogleMapController controller, List<TrackerStats> stats
+  ) {
+    return TrackerHistory(
+      locations: locations ?? this.locations,
+      showMarker: showMarker ?? this.showMarker,
+      controller: controller ?? this.controller,
+      stats: stats ?? this.stats
+    );
+  }
 
   @override
-  List<Object> get props => super.props..addAll([this.showMarker, this.controller]);
+  List<Object> get props => super.props..addAll([this.showMarker, this.controller, this.stats]);
 }

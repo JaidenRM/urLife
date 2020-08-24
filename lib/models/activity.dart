@@ -17,22 +17,20 @@ class Activity extends Equatable {
     return ssProfile;
   }
   factory Activity.fromJson(Map<dynamic, dynamic> json) => _activityFromJson(json);
-  Map<String, dynamic> toJson(String mapName) => _activityToJson(this, mapName);
+  Map<String, dynamic> toJson() => _activityToJson(this);
 
   @override
   List<Object> get props => [];
 }
 
 //helpers
-Map<String, dynamic> _activityToJson(Activity activity, String mapName) {
+Map<String, dynamic> _activityToJson(Activity activity) {
   var locs = activity.locations.map((loc) => loc.toJson());
   var locations = locs.toList();
   
   return <String, dynamic> {
-    mapName: <String, dynamic> {
-      'name': activity.activityName,
-      'locations': locations,
-    }
+    'name': activity.activityName,
+    'locations': locations,
   };
 }
 

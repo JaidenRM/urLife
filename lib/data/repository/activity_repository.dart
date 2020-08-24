@@ -75,16 +75,14 @@ class ActivityRepository {
 
   Future<bool> addActivity(Activity activity) async {
     var activityDB = DataFactory().dataSource.activityData;
-    var user = await FirebaseAuth.instance.currentUser();
 
-    return activityDB.addActivity(user.uid, activity);
+    return await activityDB.addActivity(activity);
   }
 
   Future<List<Activity>> getAllActivities() async {
     var activityDB = DataFactory().dataSource.activityData;
-    var user = await FirebaseAuth.instance.currentUser();
 
-    return activityDB.getAllActivities(user.uid);
+    return activityDB.getAllActivities();
   }
   
   double _haversineDistanceMs(Location loc1, Location loc2) {
